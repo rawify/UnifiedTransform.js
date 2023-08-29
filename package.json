@@ -1,0 +1,52 @@
+{
+  "name": "unifiedtransform",
+  "title": "UnifiedTransform",
+  "version": "0.0.1",
+  "homepage": "https://github.com/rawify/UnifiedTransform.js",
+  "bugs": {
+    "url": "https://github.com/rawify/UnifiedTransform.js/issues"
+  },
+  "description": "A library to work with CSS transform strings",
+  "keywords": [
+    "css",
+    "transform",
+    "matrix",
+    "math",
+    "translate",
+    "rotate",
+    "scale",
+    "2d"
+  ],
+  "author": {
+    "name": "Robert Eisele",
+    "email": "robert@raw.org",
+    "url": "https://raw.org/"
+  },
+  "type": "module",
+  "main": "unifiedtransform.cjs",
+  "exports": {
+    "import": "./unifiedtransform.cjs",
+    "require": "./unifiedtransform.cjs"
+  },
+  "types": "./unifiedtransform.d.ts",
+  "private": false,
+  "readmeFilename": "README.md",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/infusion/UnifiedTransform.js.git"
+  },
+  "funding": {
+    "type": "patreon",
+    "url": "https://github.com/sponsors/rawify"
+  },
+  "engines": {
+    "node": "*"
+  },
+  "scripts": {
+    "test": "mocha tests/*.js"
+  },
+  "devDependencies": {
+    "mocha": "*"
+  }
+}
