@@ -1,4 +1,4 @@
-# UnifiedTransform.js - Combining CSS/SVG Transforms into a single Transform with JavaScript
+# UnifiedTransform.js - Combining CSS/SVG Transforms into a single Transform
 
 [![NPM Package](https://img.shields.io/npm/v/unifiedtransform.svg?style=flat)](https://npmjs.org/package/unifiedtransform "View this project on npm")
 [![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
