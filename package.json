@@ -34,7 +34,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/infusion/UnifiedTransform.js.git"
+    "url": "git://github.com/rawify/UnifiedTransform.js.git"
   },
   "funding": {
     "type": "patreon",
