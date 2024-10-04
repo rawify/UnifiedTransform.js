@@ -1,7 +1,7 @@
 {
   "name": "unifiedtransform",
   "title": "UnifiedTransform",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "homepage": "https://github.com/rawify/UnifiedTransform.js",
   "bugs": {
     "url": "https://github.com/rawify/UnifiedTransform.js/issues"
@@ -17,36 +17,46 @@
     "scale",
     "2d"
   ],
+  "private": false,
+  "main": "./dist/unifiedtransform.js",
+  "module": "./dist/unifiedtransform.mjs",
+  "types": "./unifiedtransform.d.ts",
+  "browser": "./dist/unifiedtransform.min.js",
+  "unpkg": "./dist/unifiedtransform.min.js",
+  "readmeFilename": "README.md",
+  "exports": {
+    ".": {
+      "types": "./unifiedtransform.d.ts",
+      "require": "./dist/unifiedtransform.js",
+      "import": "./dist/unifiedtransform.mjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rawify/UnifiedTransform.js.git"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/rawify"
+  },
   "author": {
     "name": "Robert Eisele",
     "email": "robert@raw.org",
     "url": "https://raw.org/"
   },
-  "type": "module",
-  "main": "unifiedtransform.cjs",
-  "exports": {
-    "import": "./unifiedtransform.cjs",
-    "require": "./unifiedtransform.cjs"
-  },
-  "types": "./unifiedtransform.d.ts",
-  "private": false,
-  "readmeFilename": "README.md",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/rawify/UnifiedTransform.js.git"
-  },
-  "funding": {
-    "type": "patreon",
-    "url": "https://github.com/sponsors/rawify"
-  },
   "engines": {
     "node": "*"
   },
+  "directories": {
+    "test": "tests"
+  },
   "scripts": {
-    "test": "mocha tests/*.js"
+    "test": "mocha tests/*.js",
+    "build": "crude-build UnifiedTransform"
   },
   "devDependencies": {
+    "crude-build": "^0.0.1",
     "mocha": "*"
   }
 }

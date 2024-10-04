@@ -1,6 +1,6 @@
 
-import UnifiedTransform from 'unifiedtransform';
-import assert from 'assert';
+const UnifiedTransform = require('unifiedtransform');
+const assert = require('assert');
 
 assert.v = function (a, b) {
 

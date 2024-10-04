@@ -5,7 +5,7 @@
 
 UnifiedTransform.js is a JavaScript library to combine multiple CSS transform commands by multiplying the matrices one after the other. This is especially useful when you want to apply all the transforms to your elements not embedded within the same DOM hierarchy.
 
-# Example / Motivation
+## Example / Motivation
 
 ```js
 import UnifiedTransform from 'unifiedtransform';
@@ -19,8 +19,8 @@ cm.rotate(45);
 console.log(cm.toTransformString()) // matrix(0.3118675362266392, 1.4672214011007083, -1.4672214011007083, 0.3118675362266392, 0, 100)
 ```
 
-Methods
-===
+## Methods
+
 
 UnifiedTransform translate(tx, ty)
 ---
@@ -64,16 +64,16 @@ String toTransformString()
 Gets a CSS transform string to apply the current matrix
 
 
-Installation
-===
+## Installation
+
 Installing UnifiedTransform is as easy as cloning this repo or use the following command:
 
 ```
 npm install unifiedtransform
 ```
 
-Using UnifiedTransform.js with TypeScript
-===
+## Using UnifiedTransform.js with TypeScript
+
 ```js
 import UnifiedTransform from "unifiedtransform";
 const cm = new UnifiedTransform();
@@ -81,15 +81,29 @@ const cm = new UnifiedTransform();
 ```
 
 
-Testing
-===
-If you plan to enhance the library, make sure you add test cases and all the previous tests are passing. You can test the library with
+
+##Coding Style
+
+As every library I publish, UnifiedTransform.js is also built to be as small as possible after compressing it with Google Closure Compiler in advanced mode. Thus the coding style orientates a little on maxing-out the compression rate. Please make sure you keep this style if you plan to extend the library.
+
+##Building the library
+
+After cloning the Git repository run:
 
 ```
-npm test
+npm install
+npm run build
 ```
 
-Copyright and licensing
-===
-Copyright (c) 2023, [Robert Eisele](https://raw.org/)
+##Run a test
+
+Testing the source against the shipped test suite is as easy as
+
+```
+npm run test
+```
+
+## Copyright and licensing
+
+Copyright (c) 2025, [Robert Eisele](https://raw.org/)
 Licensed under the MIT license.
