@@ -240,8 +240,7 @@ class UnifiedTransform {
     }
 }
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = UnifiedTransform;
-module.exports = UnifiedTransform; 
+Object.defineProperty(UnifiedTransform, "__esModule", { 'value': true });
+UnifiedTransform['default'] = UnifiedTransform;
+UnifiedTransform['UnifiedTransform'] = UnifiedTransform;
+module['exports'] = UnifiedTransform;

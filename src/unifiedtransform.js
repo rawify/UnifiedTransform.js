@@ -1,5 +1,5 @@
 /**
- * @license UnifiedTransform v0.1.0 10/4/2024
+ * @license UnifiedTransform v0.1.1 10/5/2024
  * https://github.com/rawify/UnifiedTransform.js
  *
  * Copyright (c) 2024, Robert Eisele (https://raw.org/)
