@@ -239,5 +239,5 @@ UnifiedTransform.prototype = {
     }
 }
 export {
-  UnifiedTransform as default
+  UnifiedTransform as default, UnifiedTransform
 };
