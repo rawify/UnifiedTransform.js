@@ -31,10 +31,12 @@ cm.transform('translateY(100px) rotate(33deg)')
 console.log(cm.toTransformString()) // matrix(...)
 ```
 
-Which simplies the HTML:
+Which simplies the HTML to:
 
 ```html
-<div style="transform: matrix(0.3118675362266392, 1.4672214011007083, -1.4672214011007083, 0.3118675362266392, 0, 100);">rawr</div>
+<div style="transform: matrix(-0.14084146883576715, 0.2648842778576781, -0.2648842778576781, -0.14084146883576715, -14.885840942752367, 402.61467228242975);">
+  rawr
+</div>
 ```
 
 ## Methods
