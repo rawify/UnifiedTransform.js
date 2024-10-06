@@ -28,15 +28,13 @@ cm.transform('translate(15px, 400px) scale(0.3)');
 cm.rotate(85);
 cm.transform('translateY(100px) rotate(33deg)')
 
-console.log(cm.toTransformString()) // matrix(...)
+document.getElementById("newDom").style.transform = cm.toTransformString());
 ```
 
 Which simplies the HTML to:
 
 ```html
-<div style="transform: matrix(-0.14084146883576715, 0.2648842778576781, -0.2648842778576781, -0.14084146883576715, -14.885840942752367, 402.61467228242975);">
-  rawr
-</div>
+<div id="newDom">rawr</div>
 ```
 
 ## Methods
