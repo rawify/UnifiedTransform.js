@@ -14,7 +14,7 @@ UnifiedTransform.prototype = {
      * @param {number|string} ty The number to be translated on the x-axis.
      * @returns 
      */
-    translate: function (tx, ty) {
+    "translate": function (tx, ty) {
         return this['applyMatrix']([
             1, 0, 0,
             1, parseFloat(String(tx).replace("px", "")) || 0, parseFloat(String(ty).replace("px", "")) || 0]);
@@ -27,7 +27,7 @@ UnifiedTransform.prototype = {
      * @param {number|string|null} sy The number to be scaled on the y-axis.
      * @returns 
      */
-    scale: function (sx, sy = null) {
+    "scale": function (sx, sy = null) {
 
         if (sy === null) {
             sy = sx;
@@ -46,7 +46,7 @@ UnifiedTransform.prototype = {
      * @param {number|string} y The y-coordinate of the point to be rotated around
      * @returns 
      */
-    rotate: function (angle, x, y) {
+    "rotate": function (angle, x, y) {
 
         if (typeof angle == "string") {
 
@@ -83,7 +83,7 @@ UnifiedTransform.prototype = {
      * @param {number|string} degrees The skew angle
      * @returns UnifiedTransform
      */
-    skewX: function (degrees) {
+    "skewX": function (degrees) {
         let tan = Math.tan(parseFloat(degrees) / 360 * TAU);
 
         return this['applyMatrix']([1, 0, tan, 1, 0, 0]);
@@ -95,7 +95,7 @@ UnifiedTransform.prototype = {
      * @param {number|string} degrees The skew angle
      * @returns UnifiedTransform
      */
-    skewY: function (degrees) {
+    "skewY": function (degrees) {
 
         let tan = Math.tan(parseFloat(degrees) / 360 * TAU);
 
@@ -108,7 +108,7 @@ UnifiedTransform.prototype = {
      * @param {Array} m The matrix given as a one dimensional array
      * @returns UnifiedTransform
      */
-    applyMatrix: function (m) {
+    "applyMatrix": function (m) {
 
         let [Aa, Ab, Ac, Ad, Ax, Ay] = this['matrix'];
         let [Ba, Bb, Bc, Bd, Bx, By] = m.map(parseFloat)
@@ -130,7 +130,7 @@ UnifiedTransform.prototype = {
      * @param {string} str The CSS transform string
      * @returns UnifiedTransform
      */
-    transform: function (str) {
+    "transform": function (str) {
 
         for (let m of [...str.matchAll(/(matrix|translate|translateX|translateY|scale|rotate|skewX|skewY)\s*\(([^)]+)\)/g)]) {
 
@@ -200,7 +200,7 @@ UnifiedTransform.prototype = {
      * @param {number} y 
      * @returns The transformed point
      */
-    eval: function (x, y) {
+    "eval": function (x, y) {
         const m = this['matrix'];
         return [
             x * m[0] + y * m[2] + m[4],
@@ -214,7 +214,7 @@ UnifiedTransform.prototype = {
      * @param {boolean} d2 Decides if the returned matrix is a two dimensional array
      * @returns The current transform matrix
      */
-    toMatrix: function (d2 = false) {
+    "toMatrix": function (d2 = false) {
         const [a, b, c, d, tx, ty] = this['matrix'];
 
         if (d2) {
@@ -234,7 +234,7 @@ UnifiedTransform.prototype = {
      * 
      * @returns The transform string
      */
-    toTransformString: function () {
+    "toTransformString": function () {
         return 'matrix(' + this['matrix'].join(", ") + ')';
     }
 }
