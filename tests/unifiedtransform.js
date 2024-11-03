@@ -230,6 +230,9 @@ const tests = [{
 }, {
     "input": "scale(1.3151917202044554)scale(1.015731784767992,1.4106178279716612)",
     "output": "matrix(1.33588, 0, 0, 1.85523, 0, 0)"
+}, {
+    "input": "rotate(-10 50 100) translate(-36 45.5) skewX(40) scale(1 0.5)",
+    "output": "matrix(0.984808, -0.173648, 0.5, 0.41955, -44.1573, 61.2617)"
 }];
 
 describe("UnifiedTransform", function () {

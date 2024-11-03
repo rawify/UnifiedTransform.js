@@ -1,7 +1,7 @@
 
 declare module 'UnifiedTransform';
 
-export default class UnifiedTransform {
+export class UnifiedTransform {
 
     /**
      * Specifies a 2D translation by the vector (tx, ty)
@@ -48,12 +48,13 @@ export default class UnifiedTransform {
     skewY(degrees: string | number): UnifiedTransform;
 
     /**
-     * Specifies a 2D transformation in the form of a transformation matrix of the six values [a, b, c, d, x, y]
+     * Specifies a 2D transformation in the form of a transformation matrix
      * 
      * @param {Array} m The matrix given as a one dimensional array
+     * @param {string} order The order format of the matrix, CSS, flat or 2D
      * @returns UnifiedTransform
      */
-    applyMatrix(m: [number | string, number | string, number | string, number | string, number | string, number | string]): UnifiedTransform;
+    applyMatrix(m: [number | string, number | string, number | string, number | string, number | string, number | string], order: "2D" | "flat" | "CSS" = "CSS"): UnifiedTransform;
 
     /**
      * Parses a transform string and applies each transformation one after the other
@@ -75,10 +76,10 @@ export default class UnifiedTransform {
     /**
      * Gets the 3x3 transform matrix of the current homogeneous transformation
      * 
-     * @param {boolean} twoDee Decides if the returned matrix is a two dimensional array
+     * @param {string} order The order of the returned matrix, CSS, flat or 2D
      * @returns The current transform matrix
      */
-    toMatrix(twoDee?: boolean): Array;
+    toMatrix(order: "2D" | "flat" | "CSS" = "CSS"): Array;
 
     /**
      * Gets a CSS transform string to apply the current matrix
@@ -87,3 +88,5 @@ export default class UnifiedTransform {
      */
     toTransformString(): string;
 }
+
+export default UnifiedTransform;

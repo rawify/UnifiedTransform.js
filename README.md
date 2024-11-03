@@ -51,7 +51,7 @@ Specifies a 2D translation by the vector (tx, ty)
 
 Specifies a 2D scale operation by the (sx, sy) scaling vector described by the 2 parameters. If the second parameter is omitted, the scaling is applied symmetrically. 
 
-### UnifiedTransform rotate(angle, x, y)
+### UnifiedTransform rotate(angle[, x, y])
 
 Specifies a 2D rotation by the angle specified in the parameter about the origin of the element or optionally the given point (x, y)
 
@@ -63,17 +63,25 @@ Specifies a 2D skew transformation along the X axis by the given angle.
 
 Specifies a 2D skew transformation along the Y axis by the given angle.
 
-### UnifiedTransform applyMatrix(m)
+### UnifiedTransform applyMatrix(m[, order="CSS" | "2D" | "flat"])
 
-Specifies a 2D transformation in the form of a transformation matrix of the six values [a, b, c, d, x, y]
+Specifies a 2D transformation in the form of a transformation matrix. With 
+
+- `order="CSS"` (default) a 6 element array `[a, b, c, d, x, y]` is expected
+- `order="2D"` a 3x3 array is expected
+- `order="flat"` a 9 element array in classic row format is expected
 
 ### Array eval(x, y)
 
 Evaluates a point using the current transformation matrix and returns the new point
 
-### Array toMatrix(2D = false)
+### Array toMatrix([order="CSS" | "2D" | "flat"])
 
-Gets the 3x3 transform matrix of the current homogeneous transformation, optionally as a 2D array.
+Gets the transform matrix of the current homogeneous transformation. With 
+
+- `order="flat"` (default) a flat 9 element array in the classic row format is returned
+- `order="2D"` a 3x3 array is returned 
+- `order="CSS"` a 6 element array `[a, b, c, d, x, y]` is returned
 
 ### String toTransformString()
 

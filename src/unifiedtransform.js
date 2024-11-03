@@ -1,5 +1,5 @@
 /**
- * @license UnifiedTransform v0.3.2 10/28/2024
+ * @license UnifiedTransform v0.4.0 11/3/2024
  * https://github.com/rawify/UnifiedTransform.js
  *
  * Copyright (c) 2024, Robert Eisele (https://raw.org/)
@@ -7,6 +7,20 @@
  **/
 
 const TAU = Math.PI * 2;
+
+function isRotationMatrix([a, b, c, d, x, y]) {
+    // Check if Det(R) = 1 and R^T * R = I
+
+    if (Math.abs(a * x + b * y) > 1e-8) return false;
+    if (Math.abs(a * d - b * c - 1) > 1e-8) return false;
+    if (Math.abs(x * x + y * y) > 1e-8) return false;
+    if (Math.abs(a * a + b * b - 1) > 1e-8) return false;
+    if (Math.abs(a * c + b * d) > 1e-8) return false;
+    if (Math.abs(c * c + d * d - 1) > 1e-8) return false;
+    if (Math.abs(c * x + d * y) > 1e-8) return false;
+
+    return true;
+}
 
 function UnifiedTransform() {
     this['matrix'] = [1, 0, 0, 1, 0, 0];
@@ -109,15 +123,24 @@ UnifiedTransform.prototype = {
     },
 
     /**
-     * Specifies a 2D transformation in the form of a transformation matrix of the six values [a, b, c, d, x, y]
+     * Specifies a 2D transformation in the form of a transformation matrix
      * 
-     * @param {Array} m The matrix given as a one dimensional array
+     * @param {Array<number> | Array<Array<number>>} m The matrix given as a one dimensional array
+     * @param {string} order The order format of the matrix, CSS, flat or 2D
      * @returns UnifiedTransform
      */
-    "applyMatrix": function (m) {
+    "applyMatrix": function (m, order = 'CSS') {
 
         let [Aa, Ab, Ac, Ad, Ax, Ay] = this['matrix'];
-        let [Ba, Bb, Bc, Bd, Bx, By] = m.map(parseFloat)
+        let Ba, Bb, Bc, Bd, Bx, By;
+
+        if (order === 'CSS') {
+            [Ba, Bb, Bc, Bd, Bx, By] = m.map(parseFloat);
+        } else if (order === '2D') {
+            [[Ba, Bc, Bx], [Bb, Bd, By], [, , ,]] = m.map(x => x.map(parseFloat));
+        } else {
+            [Ba, Bc, Bx, Bb, Bd, By] = m.map(parseFloat);
+        }
 
         this['matrix'] = [ // = A * B
             Aa * Ba + Ac * Bb,
@@ -217,22 +240,27 @@ UnifiedTransform.prototype = {
     /**
      * Gets the 3x3 transform matrix of the current homogeneous transformation
      * 
-     * @param {boolean} d2 Decides if the returned matrix is a two dimensional array
+     * @param {string} order The order of the returned matrix, CSS, flat or 2D
      * @returns The current transform matrix
      */
-    "toMatrix": function (d2 = false) {
+    "toMatrix": function (order = 'flat') {
         const [a, b, c, d, tx, ty] = this['matrix'];
 
-        if (d2) {
+        if (order === 'CSS') {
+            return [
+                a, b, c,
+                d, tx, ty];
+        } else if (order === '2D') {
             return [
                 [a, c, tx],
                 [b, d, ty],
                 [0, 0, 1]];
+        } else {
+            return [
+                a, c, tx,
+                b, d, ty,
+                0, 0, 1];
         }
-        return [
-            a, c, tx,
-            b, d, ty,
-            0, 0, 1];
     },
 
     /**
@@ -241,6 +269,12 @@ UnifiedTransform.prototype = {
      * @returns The transform string
      */
     "toTransformString": function () {
+        /*
+        // Is it a pure rotation?
+        if (isRotationMatrix(this['matrix'])) {
+            return 'rotate(' + Number((Math.acos(Math.max(-1, Math.min(1, this['matrix'][0]))) / Math.PI * 180).toFixed(3)) + ')';
+        }
+        */
         return 'matrix(' + this['matrix'].join(", ") + ')';
     }
 }
