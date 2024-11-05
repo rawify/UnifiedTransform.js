@@ -54,7 +54,7 @@ export class UnifiedTransform {
      * @param {string} order The order format of the matrix, CSS, flat or 2D
      * @returns UnifiedTransform
      */
-    applyMatrix(m: [number | string, number | string, number | string, number | string, number | string, number | string], order: "2D" | "flat" | "CSS" = "CSS"): UnifiedTransform;
+    applyMatrix(m: (number | string)[][] | (number | string)[], order: "2D" | "flat" | "CSS" = "CSS"): UnifiedTransform;
 
     /**
      * Parses a transform string and applies each transformation one after the other
