@@ -6,7 +6,7 @@
   "bugs": {
     "url": "https://github.com/rawify/UnifiedTransform.js/issues"
   },
-  "description": "A library to work with CSS transform strings",
+  "description": "The RAW library to work with CSS transform strings",
   "keywords": [
     "css",
     "transform",

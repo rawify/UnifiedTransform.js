@@ -90,21 +90,47 @@ Gets a CSS transform string to apply the current matrix
 
 ## Installation
 
-Installing UnifiedTransform is as easy as cloning this repo or use the following command:
+You can install `UnifiedTransform.js` via npm:
 
-```
+```bash
 npm install unifiedtransform
 ```
 
-## Using UnifiedTransform.js with TypeScript
+Or with yarn:
 
-```js
-import UnifiedTransform from "unifiedtransform";
-const cm = new UnifiedTransform();
-...
+```bash
+yarn add unifiedtransform
 ```
 
+Alternatively, download or clone the repository:
 
+```bash
+git clone https://github.com/rawify/UnitFormat.js
+```
+
+## Usage
+
+Include the `unifiedtransform.min.js` file in your project:
+
+```html
+<script src="path/to/unifiedtransform.min.js"></script>
+<script>
+  const cm = new UnifiedTransform();
+  ...
+</script>
+```
+
+Or in a Node.js project:
+
+```javascript
+const UnifiedTransform = require('unifiedtransform');
+```
+
+or
+
+```javascript
+import UnifiedTransform from "unifiedtransform";
+```
 
 ## Coding Style
 
