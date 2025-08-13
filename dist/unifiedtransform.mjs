@@ -1,6 +1,14 @@
 'use strict';
 
 const TAU = Math.PI * 2;
+const D2R = TAU / 360;
+
+const RE_FN = /(matrix|translate|translateX|translateY|scale|rotate|skewX|skewY)\s*\(([^)]+)\)/g;
+const RE_SPLIT = /[\s,]+/;
+
+function parseNumber(v) {
+    return typeof v === 'number' ? v : (parseFloat(v) || 0);
+}
 
 function isRotationMatrix([a, b, c, d, x, y]) {
     // Check if Det(R) = 1 and R^T * R = I
@@ -17,6 +25,7 @@ function isRotationMatrix([a, b, c, d, x, y]) {
 }
 
 function UnifiedTransform() {
+    // Internal 3x3 (affine) in compact form: [a, b, c, d, tx, ty]
     this['matrix'] = [1, 0, 0, 1, 0, 0];
 }
 
@@ -28,10 +37,10 @@ UnifiedTransform.prototype = {
      * @param {number|string} ty The number to be translated on the x-axis.
      * @returns 
      */
-    "translate": function (tx, ty) {
+    'translate': function (tx, ty) {
         return this['applyMatrix']([
             1, 0, 0,
-            1, parseFloat(String(tx).replace("px", "")) || 0, parseFloat(String(ty).replace("px", "")) || 0]);
+            1, parseNumber(String(tx).replace('px', '')) || 0, parseNumber(String(ty).replace('px', '')) || 0]);
     },
 
     /**
@@ -41,15 +50,15 @@ UnifiedTransform.prototype = {
      * @param {number|string|null} sy The number to be scaled on the y-axis.
      * @returns 
      */
-    "scale": function (sx, sy = null) {
+    'scale': function (sx, sy = null) {
 
         if (sy === null) {
             sy = sx;
         }
 
         return this['applyMatrix']([
-            parseFloat(sx) || 1, 0, 0,
-            parseFloat(sy) || 1, 0, 0]);
+            parseNumber(sx) || 1, 0, 0,
+            parseNumber(sy) || 1, 0, 0]);
     },
 
     /**
@@ -60,20 +69,20 @@ UnifiedTransform.prototype = {
      * @param {number|string} y The y-coordinate of the point to be rotated around
      * @returns 
      */
-    "rotate": function (angle, x, y) {
+    'rotate': function (angle, x, y) {
 
-        if (typeof angle == "string") {
+        if (typeof angle == 'string') {
 
-            if (angle.indexOf("rad") !== -1) {
-                angle = angle.replace("rad", '');
-                angle = parseFloat(angle);
+            if (angle.indexOf('rad') !== -1) {
+                angle = angle.replace('rad', '');
+                angle = parseNumber(angle);
             } else {
-                angle = angle.replace("deg", '');
-                angle = parseFloat(angle) / 360 * TAU;
+                angle = angle.replace('deg', '');
+                angle = parseNumber(angle) * D2R;
             }
 
         } else {
-            angle = angle / 360 * TAU;
+            angle = angle * D2R;
         }
 
         let cos = Math.cos(angle);
@@ -97,8 +106,8 @@ UnifiedTransform.prototype = {
      * @param {number|string} degrees The skew angle
      * @returns UnifiedTransform
      */
-    "skewX": function (degrees) {
-        let tan = Math.tan(parseFloat(degrees) / 360 * TAU);
+    'skewX': function (degrees) {
+        let tan = Math.tan(parseNumber(degrees) * D2R);
 
         return this['applyMatrix']([1, 0, tan, 1, 0, 0]);
     },
@@ -109,9 +118,9 @@ UnifiedTransform.prototype = {
      * @param {number|string} degrees The skew angle
      * @returns UnifiedTransform
      */
-    "skewY": function (degrees) {
+    'skewY': function (degrees) {
 
-        let tan = Math.tan(parseFloat(degrees) / 360 * TAU);
+        let tan = Math.tan(parseNumber(degrees) * D2R);
 
         return this['applyMatrix']([1, tan, 0, 1, 0, 0]);
     },
@@ -119,21 +128,27 @@ UnifiedTransform.prototype = {
     /**
      * Specifies a 2D transformation in the form of a transformation matrix
      * 
-     * @param {Array<number> | Array<Array<number>>} m The matrix given as a one dimensional array
+     * @param {Array<number> | Array<Array<number>>} B The matrix given as a one dimensional array
      * @param {string} order The order format of the matrix, CSS, flat or 2D
      * @returns UnifiedTransform
      */
-    "applyMatrix": function (m, order = 'CSS') {
+    'applyMatrix': function (B, order = 'CSS') {
 
         let [Aa, Ab, Ac, Ad, Ax, Ay] = this['matrix'];
         let Ba, Bb, Bc, Bd, Bx, By;
 
         if (order === 'CSS') {
-            [Ba, Bb, Bc, Bd, Bx, By] = m.map(parseFloat);
+            // [a, b, c, d, tx, ty]
+            Ba = parseNumber(B[0]); Bb = parseNumber(B[1]); Bc = parseNumber(B[2]); Bd = parseNumber(B[3]); Bx = parseNumber(B[4]); By = parseNumber(B[5]);
         } else if (order === '2D') {
-            [[Ba, Bc, Bx], [Bb, Bd, By], [, , ,]] = m.map(x => x.map(parseFloat));
+            // [[a, c, tx], [b, d, ty], [0,0,1]]
+            const r0 = B[0], r1 = B[1];
+            Ba = parseNumber(r0[0]); Bc = parseNumber(r0[1]); Bx = parseNumber(r0[2]);
+            Bb = parseNumber(r1[0]); Bd = parseNumber(r1[1]); By = parseNumber(r1[2]);
         } else {
-            [Ba, Bc, Bx, Bb, Bd, By] = m.map(parseFloat);
+            // 'flat' -> [a, c, tx, b, d, ty, 0, 0, 1]
+            Ba = parseNumber(B[0]); Bc = parseNumber(B[1]); Bx = parseNumber(B[2]);
+            Bb = parseNumber(B[3]); Bd = parseNumber(B[4]); By = parseNumber(B[5]);
         }
 
         this['matrix'] = [ // = A * B
@@ -153,18 +168,19 @@ UnifiedTransform.prototype = {
      * @param {string} str The CSS transform string
      * @returns UnifiedTransform
      */
-    "transform": function (str) {
+    'transform': function (str) {
 
-        for (let m of [...str.matchAll(/(matrix|translate|translateX|translateY|scale|rotate|skewX|skewY)\s*\(([^)]+)\)/g)]) {
+        RE_FN['lastIndex'] = 0;
 
-            let [, cmd, params] = m;
+        for (let m; (m = RE_FN.exec(str)) !== null;) {
 
-            params = params.trim().split(/[\s,]+/);
+            RE_SPLIT['lastIndex'] = 0;
+            const params = m[2].trim().split(RE_SPLIT);
 
-            switch (cmd) {
+            switch (m[1]) {
                 case 'matrix':
                     if (params.length === 6) {
-                        this['applyMatrix'](params);
+                        this['applyMatrix'](params); // CSS order
                     }
                     break;
 
@@ -223,12 +239,11 @@ UnifiedTransform.prototype = {
      * @param {number} y 
      * @returns The transformed point
      */
-    "eval": function (x, y) {
+    'eval': function (x, y) {
         const m = this['matrix'];
         return [
             x * m[0] + y * m[2] + m[4],
-            x * m[1] + y * m[3] + m[5]
-        ];
+            x * m[1] + y * m[3] + m[5]];
     },
 
     /**
@@ -237,7 +252,7 @@ UnifiedTransform.prototype = {
      * @param {string} order The order of the returned matrix, CSS, flat or 2D
      * @returns The current transform matrix
      */
-    "toMatrix": function (order = 'flat') {
+    'toMatrix': function (order = 'flat') {
         const [a, b, c, d, tx, ty] = this['matrix'];
 
         if (order === 'CSS') {
@@ -262,14 +277,14 @@ UnifiedTransform.prototype = {
      * 
      * @returns The transform string
      */
-    "toTransformString": function () {
+    'toTransformString': function () {
         /*
         // Is it a pure rotation?
         if (isRotationMatrix(this['matrix'])) {
-            return 'rotate(' + Number((Math.acos(Math.max(-1, Math.min(1, this['matrix'][0]))) / Math.PI * 180).toFixed(3)) + ')';
+            return 'rotate(' + Number((Math.acos(Math.max(-1, Math.min(1, this['matrix'][0]))) / D2R).toFixed(3)) + ')';
         }
         */
-        return 'matrix(' + this['matrix'].join(", ") + ')';
+        return 'matrix(' + this['matrix'].join(', ') + ')';
     }
 }
 export {
