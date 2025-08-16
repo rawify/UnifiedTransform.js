@@ -89,4 +89,4 @@ export class UnifiedTransform {
     toTransformString(): string;
 }
 
-export = UnifiedTransform;
+export default UnifiedTransform;

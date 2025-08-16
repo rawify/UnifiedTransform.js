@@ -1,12 +1,12 @@
 {
   "name": "unifiedtransform",
   "title": "UnifiedTransform",
-  "version": "0.4.1",
+  "version": "0.4.2",
+  "description": "The RAW library to work with CSS transform strings",
   "homepage": "https://github.com/rawify/UnifiedTransform.js",
   "bugs": {
     "url": "https://github.com/rawify/UnifiedTransform.js/issues"
   },
-  "description": "The RAW library to work with CSS transform strings",
   "keywords": [
     "css",
     "transform",
@@ -20,17 +20,38 @@
   "private": false,
   "main": "./dist/unifiedtransform.js",
   "module": "./dist/unifiedtransform.mjs",
-  "types": "./unifiedtransform.d.ts",
   "browser": "./dist/unifiedtransform.min.js",
   "unpkg": "./dist/unifiedtransform.min.js",
-  "readmeFilename": "README.md",
+  "types": "./unifiedtransform.d.ts",
   "exports": {
     ".": {
-      "types": "./unifiedtransform.d.ts",
-      "require": "./dist/unifiedtransform.js",
-      "import": "./dist/unifiedtransform.mjs"
+      "import": {
+        "types": "./unifiedtransform.d.mts",
+        "default": "./dist/unifiedtransform.mjs"
+      },
+      "require": {
+        "types": "./unifiedtransform.d.ts",
+        "default": "./dist/unifiedtransform.js"
+      },
+      "browser": {
+        "types": "./unifiedtransform.d.ts",
+        "default": "./dist/unifiedtransform.min.js"
+      },
+      "default": {
+        "types": "./unifiedtransform.d.ts",
+        "default": "./dist/unifiedtransform.js"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "<4.7": {
+      "*": [
+        "unifiedtransform.d.ts"
+      ]
     }
   },
+  "sideEffects": false,
   "repository": {
     "type": "git",
     "url": "git@github.com:rawify/UnifiedTransform.js.git"
